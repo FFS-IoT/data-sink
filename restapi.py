@@ -43,6 +43,12 @@ def input_get():
         try:
             sensorid = key.split(".")[0]
             channel = key.split(".")[1]
+
+            try:
+                value = float(value)
+            except ValueError:
+                value = value
+
             dp = DataPoint(sensorid=sensorid, channel=channel, value=value)
 
             logging.debug("Got data point: "+str(dp))
