@@ -4,6 +4,7 @@ import json
 import configparser
 import logging
 from pprint import pprint,pformat
+from datapoint import DataPoint
 
 CONFIG_FILE = "input.conf"
 
@@ -26,6 +27,26 @@ def on_message(client, userdata, msg):
     try:
         structured = json.loads(str(msg.payload,"utf8"))
         logging.debug("Decoded: "+pformat(structured))
+
+        if "signature" in structured:
+            logging.debug("Found signature: "+repr(structured["signature"]))
+            #TODO: check signature
+            del structured["signature"]
+        elif "token" in structured:
+            logging.debug("Found token: "+repr(structured["token"]))
+            #TODO: check token
+            del structured["token"]
+
+        for key,value in structured.items():
+            try:
+                sensorid = key.split(".")[0]
+                channel = key.split(".")[1]
+                dp = DataPoint(sensorid=sensorid, channel=channel, value=value)
+
+                logging.debug("Got data point: "+str(dp))
+            except IndexError as e:
+                logging.warning("Failed to extract channel: "+str(e))
+        
     except json.JSONDecodeError as e:
         logging.warning("Error decoding payload: "+str(e))
 
