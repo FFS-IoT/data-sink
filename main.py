@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 import json
 import configparser
 import logging
-
+from pprint import pprint,pformat
 
 CONFIG_FILE = "input.conf"
 
@@ -23,6 +23,11 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     logging.debug("Recieved "+msg.topic+" "+str(msg.payload))
+    try:
+        structured = json.loads(str(msg.payload,"utf8"))
+        logging.debug("Decoded: "+pformat(structured))
+    except json.JSONDecodeError as e:
+        logging.warning("Error decoding payload: "+str(e))
 
 client = mqtt.Client()
 client.on_connect = on_connect
