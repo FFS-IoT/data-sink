@@ -15,7 +15,9 @@ BASE_TOPIC = config['mqtt']["base_topic"]
 HOST = config['mqtt']['host']
 LOGFILE = config['logging']['file']
 
-logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
+logging.basicConfig(filename=LOGFILE,
+                    level=logging.DEBUG,
+                    format="%(asctime)s %(levelname)s %(message)s")
 
 def on_connect(client, userdata, flags, rc):
     logging.info("Connected with result code "+str(rc))
