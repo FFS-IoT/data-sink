@@ -19,9 +19,9 @@ logging.basicConfig(filename=LOGFILE,
 def hello():
     return "Hello World!"
 
-@app.route("/input", methods=['GET'])
+@app.route("/input", methods=['GET', 'POST'])
 def input_get():
-    parameters = request.args.to_dict()
+    parameters = request.values.to_dict()
 
     logging.debug("Got request")
     token = parameters.get("token", None)
