@@ -1,6 +1,7 @@
 import logging
 import configparser
 from datapoint import DataPoint
+from database import DbConnection
 from flask import Flask, request
 app = Flask(__name__)
 
@@ -14,6 +15,8 @@ LOGFILE = config['logging']['file']
 logging.basicConfig(filename=LOGFILE,
                     level=logging.DEBUG,
                     format="%(asctime)s %(levelname)s %(message)s")
+
+db = DbConnection()
 
 @app.route("/")
 def hello():
@@ -43,6 +46,8 @@ def input_get():
             dp = DataPoint(sensorid=sensorid, channel=channel, value=value)
 
             logging.debug("Got data point: "+str(dp))
+
+            db.store_point(dp)
         except IndexError as e:
             logging.warning("Failed to extract channel: "+str(e))
     

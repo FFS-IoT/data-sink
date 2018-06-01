@@ -6,6 +6,7 @@ import logging
 import time, datetime
 from pprint import pprint,pformat
 from datapoint import DataPoint
+from database import DbConnection
 
 CONFIG_FILE = "input.conf"
 
@@ -19,6 +20,8 @@ LOGFILE = config['logging']['file']
 logging.basicConfig(filename=LOGFILE,
                     level=logging.DEBUG,
                     format="%(asctime)s %(levelname)s %(message)s")
+
+db = DbConnection()
 
 def on_connect(client, userdata, flags, rc):
     logging.info("Connected with result code "+str(rc))
@@ -54,6 +57,8 @@ def on_message(client, userdata, msg):
                 dp = DataPoint(sensorid=sensorid, channel=channel, value=value, timestamp=datetime.datetime.fromtimestamp(timestamp,tz=datetime.timezone.utc))
 
                 logging.debug("Got data point: "+str(dp))
+
+                db.store_point(dp)
             except IndexError as e:
                 logging.warning("Failed to extract channel: "+str(e))
         
