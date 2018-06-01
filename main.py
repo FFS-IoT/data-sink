@@ -22,7 +22,7 @@ def on_connect(client, userdata, flags, rc):
     client.message_callback_add(BASE_TOPIC+'#',on_message)
 
 def on_message(client, userdata, msg):
-    logging.debug("Recieved "+msg.topic+" "+str(msg.payload))
+    logging.debug("Received "+msg.topic+" "+str(msg.payload))
     try:
         structured = json.loads(str(msg.payload,"utf8"))
         logging.debug("Decoded: "+pformat(structured))
