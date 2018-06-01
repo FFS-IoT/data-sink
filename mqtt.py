@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt
 import json
 import configparser
 import logging
+import time, datetime
 from pprint import pprint,pformat
 from datapoint import DataPoint
 
@@ -30,6 +31,8 @@ def on_message(client, userdata, msg):
         structured = json.loads(str(msg.payload,"utf8"))
         logging.debug("Decoded: "+pformat(structured))
 
+        timestamp = time.time()
+
         if "signature" in structured:
             logging.debug("Found signature: "+repr(structured["signature"]))
             #TODO: check signature
@@ -38,12 +41,17 @@ def on_message(client, userdata, msg):
             logging.debug("Found token: "+repr(structured["token"]))
             #TODO: check token
             del structured["token"]
+        
+        if "timestamp_ms" in structured:
+            timestamp = structured["timestamp_ms"]/1000
+        elif "timestamp" in structured:
+            timestamp = structured["timestamp"]
 
         for key,value in structured.items():
             try:
                 sensorid = key.split(".")[0]
                 channel = key.split(".")[1]
-                dp = DataPoint(sensorid=sensorid, channel=channel, value=value)
+                dp = DataPoint(sensorid=sensorid, channel=channel, value=value, timestamp=datetime.datetime.fromtimestamp(timestamp,tz=datetime.timezone.utc))
 
                 logging.debug("Got data point: "+str(dp))
             except IndexError as e:
