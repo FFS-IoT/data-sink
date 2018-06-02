@@ -8,10 +8,10 @@ from pprint import pprint,pformat
 from datapoint import DataPoint
 from database import DbConnection
 
-CONFIG_FILE = "input.conf"
+CONFIG_FILE = "ingress.conf"
 
 config = configparser.ConfigParser()
-config.read("input.conf")
+config.read(CONFIG_FILE)
 
 BASE_TOPIC = config['mqtt']["base_topic"]
 HOST = config['mqtt']['host']

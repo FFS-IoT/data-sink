@@ -5,10 +5,10 @@ from database import DbConnection
 from flask import Flask, request
 app = Flask(__name__)
 
-CONFIG_FILE = "input.conf"
+CONFIG_FILE = "ingress.conf"
 
 config = configparser.ConfigParser()
-config.read("input.conf")
+config.read(CONFIG_FILE)
 
 LOGFILE = config['logging']['file']
 

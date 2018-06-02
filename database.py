@@ -3,7 +3,7 @@ from influxdb import InfluxDBClient
 from datapoint import DataPoint
 import configparser
 
-CONFIG_FILE = "input.conf"
+CONFIG_FILE = "ingress.conf"
 
 config = configparser.ConfigParser()
 config.read(CONFIG_FILE)
