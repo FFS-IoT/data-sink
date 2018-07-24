@@ -14,7 +14,7 @@ LOGFILE = config['logging']['file']
 
 logging.basicConfig(filename=LOGFILE,
                     level=logging.DEBUG,
-                    format="%(asctime)s %(levelname)s %(message)s")
+                    format="%(asctime)s RESTAPI %(levelname)s %(message)s")
 
 db = DbConnection()
 
