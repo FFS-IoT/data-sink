@@ -2,6 +2,7 @@
 from influxdb import InfluxDBClient
 from datapoint import DataPoint
 import configparser
+import logging
 
 CONFIG_FILE = "ingress.conf"
 
@@ -28,5 +29,10 @@ class DbConnection():
         self.client = InfluxDBClient(database="testing")
 
     def store_point(self,datapoint):
-        self.client.write_points([_datapoint_to_influx(datapoint)])
+        try:
+            self.client.write_points([_datapoint_to_influx(datapoint)])
+        except Exception as e:
+            logging.error("Error while writing to db:")
+            logging.error(e)
+            logging.error("Datapoint: "+str(datapoint))
 
