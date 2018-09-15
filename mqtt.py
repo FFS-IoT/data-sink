@@ -53,12 +53,13 @@ def on_message(client, userdata, msg):
         for key,value in structured.items():
             try:
                 sensorid = key.split(".")[0]
-                channel = key.split(".")[1]
-                dp = DataPoint(sensorid=sensorid, channel=channel, value=value, timestamp=datetime.datetime.fromtimestamp(timestamp,tz=datetime.timezone.utc))
+                if sensorid != "timestamp":
+                  channel = key.split(".")[1]
+                  dp = DataPoint(sensorid=sensorid, channel=channel, value=value, timestamp=datetime.datetime.fromtimestamp(timestamp,tz=datetime.timezone.utc))
 
-                logging.debug("Got data point: "+str(dp))
+                  logging.debug("Got data point: "+str(dp))
 
-                db.store_point(dp)
+                  db.store_point(dp)
             except IndexError as e:
                 logging.warning("Failed to extract channel: "+str(e))
         
