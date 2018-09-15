@@ -53,7 +53,7 @@ def on_message(client, userdata, msg):
         for key,value in structured.items():
             try:
                 sensorid = key.split(".")[0]
-                if sensorid != "timestamp":
+                if sensorid != "timestamp" and sensorid != "timestamp_ms":
                   channel = key.split(".")[1]
                   dp = DataPoint(sensorid=sensorid, channel=channel, value=value, timestamp=datetime.datetime.fromtimestamp(timestamp,tz=datetime.timezone.utc))
 
