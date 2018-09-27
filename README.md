@@ -1,4 +1,4 @@
-# data-sink
+# ingress
 
 See https://github.com/FFS-IoT/freifunk-iot-concept
 
